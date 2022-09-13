@@ -1,0 +1,17 @@
+{
+  "name": "epns-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Steven Traykovski",
+  "license": "ISC",
+  "dependencies": {
+    "@epnsproject/sdk-restapi": "^0.1.13",
+    "ethers": "^5.7.0",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
+  }
+}

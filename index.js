@@ -62,6 +62,7 @@ app.get('/sendNotification/:recipient1/:title/:body', async (req, res) => {
 
     await sendNotification()
 
+    res.json(apiResponse.status)
 
 
 

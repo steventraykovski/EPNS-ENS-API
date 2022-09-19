@@ -19,6 +19,34 @@ app.get('/getFeeds/:userID', async (req, res) => {
 
 })
 
+app.get('/ensLookupByName/:nameID', async (req, res) => {
+
+    const name = req.params.nameID
+
+    const provider = new ethers.providers.AlchemyProvider("homestead")
+    const address = await provider.resolveName(name)
+
+    console.log("address:", address)
+
+    res.json(address)
+
+})
+
+app.get('/ensLookupByAccount/:accountID', async (req, res) => {
+
+    const account = req.params.accountID
+
+    const provider = new ethers.providers.AlchemyProvider("homestead")
+
+    const name = await provider.lookupAddress(account)
+
+    console.log("name:", name)
+
+    res.json(name)
+
+})
+
+
 app.get('/sendNotification/:recipient1/:title/:body', async (req, res) => {
 
     const PK = '8922804d48a159827f06ed3b1252b27239091b6af088a2d493b090516a414724' // channel private key

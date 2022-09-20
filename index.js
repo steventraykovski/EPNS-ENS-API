@@ -3,6 +3,7 @@ const express = require('express')
 const epns = require('@epnsproject/sdk-restapi')
 const app = express()
 const ethers = require('ethers')
+require('dotenv').config();
 
 
 app.get('/getFeeds/:userID', async (req, res) => {
@@ -49,49 +50,49 @@ app.get('/ensLookupByAccount/:accountID', async (req, res) => {
 
 app.get('/sendNotification/:recipient1/:title/:body', async (req, res) => {
 
-    const PK = '8922804d48a159827f06ed3b1252b27239091b6af088a2d493b090516a414724' // channel private key
+    const PK = process.env.pk // channel private key
     const Pkey = `0x${PK}`;
-    const signer = new ethers.Wallet(Pkey);
 
-    const recipient1 = req.params.recipient1
-    const title = req.params.title
-    const body = req.params.body
+        const signer = new ethers.Wallet(Pkey);
 
-    let apiResponse = []
+        const recipient1 = req.params.recipient1
+        const title = req.params.title
+        const body = req.params.body
 
-    const sendNotification = async() => {
-        try {
-             apiResponse = await epns.payloads.sendNotification({
-                signer,
-                type: 3, // target
-                identityType: 2, // direct payload
-                notification: {
-                    title: `${title}:`,
-                    body: `${body}`
-                },
-                payload: {
-                    title: `[sdk-test] payload title`,
-                    body: `sample msg body`,
-                    cta: '',
-                    img: ''
-                },
-                recipients: `eip155:42:${recipient1}`, // recipient address
-                channel: 'eip155:42:0x713518a07CD806949af94304B3F4aA35Ef3F5aB6', // your channel address
-                env: 'staging'
-            });
+        let apiResponse = []
 
-            // apiResponse?.status === 204, if sent successfully!
-            console.log('API response: ', apiResponse.status);
+        const sendNotification = async() => {
+            try {
+                 apiResponse = await epns.payloads.sendNotification({
+                    signer,
+                    type: 3, // target
+                    identityType: 2, // direct payload
+                    notification: {
+                        title: `${title}:`,
+                        body: `${body}`
+                    },
+                    payload: {
+                        title: `[sdk-test] payload title`,
+                        body: `sample msg body`,
+                        cta: '',
+                        img: ''
+                    },
+                    recipients: `eip155:42:${recipient1}`, // recipient address
+                    channel: 'eip155:42:0x713518a07CD806949af94304B3F4aA35Ef3F5aB6', // your channel address
+                    env: 'staging'
+                });
 
-        } catch (err) {
-            console.error('Error: ', err);
+                // apiResponse?.status === 204, if sent successfully!
+                console.log('API response: ', apiResponse.status);
+
+            } catch (err) {
+                console.error('Error: ', err);
+            }
         }
-    }
 
-    await sendNotification()
+        await sendNotification()
 
-    res.json(apiResponse.status)
-
+        res.json(apiResponse.status)
 
 
 })
